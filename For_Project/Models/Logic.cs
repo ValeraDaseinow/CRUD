@@ -17,12 +17,12 @@ namespace For_Project.Models
 
         }
 
-        public List<X> Get()
+        public List<X> Get() //вывод всех записей
         {
             return db.xes.ToList();
         }
 
-        public X Get(int id)
+        public X Get(int id) 
         {
             return db.xes.Find(id);
         }
@@ -38,12 +38,12 @@ namespace For_Project.Models
         public bool Put(int id, string value)
         {
             X x = db.xes.Find(id);
-            if (x == null)
+            if (x == null) //если нет записи с заданным id
                 return false;
             else
             {
                 x.Value = value;
-                db.Entry(x).State = EntityState.Modified;
+                db.Entry(x).State = EntityState.Modified; //внесение изменений в запись БД
                 db.SaveChanges();
                 return true;
             }
@@ -56,7 +56,7 @@ namespace For_Project.Models
                 return false;
             else
             {
-                db.Entry(x).State = EntityState.Deleted;
+                db.Entry(x).State = EntityState.Deleted; //удаление записи из БД
                 db.SaveChanges();
                 return true;
             }
