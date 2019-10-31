@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using For_Project.Models;
 
 namespace For_Project.Controllers
 {
@@ -10,36 +11,49 @@ namespace For_Project.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        Logic logic = new Logic();
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<X>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new ObjectResult(logic.Get());
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            if (logic.Get(id) == null)
+                return NotFound();
+            return new ObjectResult(logic.Get(id));
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public int Post([FromBody] X x)
         {
+            return logic.Post(x);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] string value)
         {
+            if (value == null)
+                return BadRequest();
+            if (!logic.Put(id, value))
+                return NotFound();
+            return Ok();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (!logic.Delete(id))
+                return NotFound();
+            return Ok();
         }
     }
 }
